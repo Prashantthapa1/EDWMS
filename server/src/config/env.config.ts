@@ -19,7 +19,16 @@ const envSchema = z.object({
     DB_PORT: z.string().default('5432'),
     DB_USER: z.string(),
     DB_PASS: z.string(),
-    DB_NAME: z.string()
+    DB_NAME: z.string(),
+
+    // jwt
+    JWT_SECRET: z.string().min(32),
+    JWT_EXPIRES_IN: z.string().default('15min'),
+    JWT_REFRESH_SECRET: z.string().min(32),
+    JWT_REFRESH_EXPIRES_IN: z.string().default('7d'),
+
+    // cookie
+    COOKIE_SECURE: z.string()
 
 });
 
@@ -39,3 +48,6 @@ if (!parsed.success) {
 export const env = parsed.data!;
 
 export default env;
+
+export const isProduction = env.NODE_ENV === 'production';
+export const isDevelopment = env.NODE_ENV === 'development';

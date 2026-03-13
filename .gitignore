@@ -61,6 +61,7 @@ Thumbs.db
 
 ### Server/client specific
 /server/dist/
+/server/scripts/
 /server/node_modules/
 /client/node_modules/
 /client/.next/
