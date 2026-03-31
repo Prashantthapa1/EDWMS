@@ -20,6 +20,7 @@ class AuthService {
             };
 
             const token_id = generateUUID();
+            const session_id = generateUUID();
 
             const hashedPassword = await hashPassword(registerInfo.newPassword);
 
@@ -41,10 +42,19 @@ class AuthService {
                 }
             );
 
+            const sessionExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+            await authRepository.createSession({
+                id: session_id,
+                user_id: user.id,
+                ip_address: '0.0.0.0',
+                expires_at: sessionExpiry
+            });
+
             await authRepository.storeRefreshTokens({
                 id: token_id,
                 user_id: user.id,
-                token_hash: tokens.refreshTokenHash       
+                token_hash: tokens.refreshTokenHash,
+                session_id: session_id
             });
 
             return { 
@@ -89,6 +99,7 @@ class AuthService {
             // }
 
             const token_id = generateUUID();
+            const session_id = generateUUID();
 
             const tokens = generateTokens(
                 {
@@ -102,18 +113,28 @@ class AuthService {
                 }
             );
 
+            const sessionExpiry = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+            await authRepository.createSession({
+                id: session_id as string,
+                user_id: userInfo.id,
+                device_info: deviceInfo?.user_agent,
+                ip_address: deviceInfo?.ip,
+                expires_at: sessionExpiry
+            });
+
             await authRepository.storeRefreshTokens({
                 id: token_id,
                 user_id: userInfo.id,
                 token_hash: tokens.refreshTokenHash,
                 ip: deviceInfo?.ip,
-                user_agent: deviceInfo?.user_agent
+                user_agent: deviceInfo?.user_agent,
+                session_id: session_id
             });
 
             const { password, locked_until, google_id, ...user } = userInfo;
 
             return { 
-                user, 
+                user: { ...user, role: userInfo.role?.toLowerCase() }, 
                 tokens: {
                     accessToken: tokens.accessToken,
                     refreshToken: tokens.refreshToken
@@ -130,9 +151,13 @@ class AuthService {
         if (!refresh_token) return;
         try {
             const payload = verifyRefreshToken(refresh_token);
+            const row = await authRepository.findRefreshToken(payload.token_id);
+            if (row?.session_id) {
+                await authRepository.deactivateSession(row.session_id);
+            }
             await authRepository.revokeRefreshToken(payload.token_id);
         } catch {
-            // token invalid/expired — still clear cookies on client; no-op here
+            
         }
     }
 
@@ -142,12 +167,18 @@ class AuthService {
 
         const row = await authRepository.findRefreshToken(payload.token_id);
 
-        // 3. reject if missing, revoked, or expired
         if (!row || row.is_revoked || new Date(row.expires_at) < new Date()) {
             throw new notFound('Refresh token invalid or expired');
         }
 
-        // 4. detect reuse: hash presented token and compare
+        if (row.session_id) {
+            const session = await authRepository.findActiveSession(row.session_id);
+            if (!session || !session.is_active || new Date(session.expires_at) < new Date()) {
+                throw new badRequest('Session expired. Please log in again.');
+            }
+        }
+
+        // detect reuse: hash presented token and compare
         const { createHash, timingSafeEqual } = await import('crypto');
         const presented = Buffer.from(
             createHash('sha256').update(refresh_token).digest('hex')
@@ -161,7 +192,6 @@ class AuthService {
             throw new badRequest('Token reuse detected. Please log in again.');
         }
 
-        // 5. rotate: revoke old token, create new one
         await authRepository.revokeRefreshToken(payload.token_id);
 
         const userInfo = await authRepository.findById(row.user_id);
@@ -178,8 +208,13 @@ class AuthService {
             user_id: userInfo.id,
             token_hash: tokens.refreshTokenHash,
             ip: deviceInfo?.ip,
-            user_agent: deviceInfo?.user_agent
+            user_agent: deviceInfo?.user_agent,
+            session_id: row.session_id  // keep the same session
         });
+
+        if (row.session_id) {
+            await authRepository.updateSessionLastActive(row.session_id);
+        }
 
         const { password, locked_until, google_id, failed_login_attempts, ...user } = userInfo;
 

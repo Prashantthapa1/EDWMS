@@ -36,16 +36,26 @@ export class BaseRepository<T> {
     };
 
     async findByEmail(email: string): Promise<T | null> {
-        const query = `SELECT * FROM ${this.tableName} WHERE email=$1`;
+        const query = `
+            SELECT u.*, r.name as role 
+            FROM ${this.tableName} u
+            LEFT JOIN roles r ON u.role_id = r.id
+            WHERE u.email=$1
+        `;
         const result = await this.db.query(query, [email]);
         return result.rows[0] || null;
     }   
 
     async findById(id: string): Promise<T | null> {
-        const query = `SELECT * FROM ${this.tableName} WHERE id=$1`;
+        const query = `
+            SELECT u.*, r.name as role 
+            FROM ${this.tableName} u
+            LEFT JOIN roles r ON u.role_id = r.id
+            WHERE u.id=$1
+        `;
         const result = await this.db.query(query, [id]);
         return result.rows[0];
-    } 
+    }
 
     async checkExisting(email: string): Promise<Boolean> {
         const result = await this.db.query( `SELECT * FROM users WHERE email=$1`, [email]);

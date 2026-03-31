@@ -12,8 +12,7 @@ class AuthRepository extends BaseRepository<User>{
         try {
             console.log("creating user")
             const rolesRes = await pool.query('SELECT id FROM roles WHERE name=$1', ['EMPLOYEE']);
-            // console.log("Roles id metadata: ", rolesRes);
-
+            
             if(rolesRes.rows.length ===  0) {
                 throw new Error("Role id not found");
             }
@@ -43,18 +42,55 @@ class AuthRepository extends BaseRepository<User>{
         }
     }
 
+    async createSession(data: {
+        id: string,
+        user_id: string,
+        device_info?: string | undefined,
+        ip_address?: string | undefined,
+        expires_at: Date
+    }): Promise<void> {
+        await pool.query(
+            `INSERT INTO user_sessions (id, user_id, device_info, ip_address, last_active_at, expires_at)
+                VALUES ($1, $2, $3, $4, NOW(), $5)`,
+            [data.id, data.user_id, data.device_info ?? null, data.ip_address, data.expires_at]
+        );
+    }
+
+    async deactivateSession(session_id: string): Promise<void> {
+        await this.db.query(
+            `UPDATE user_sessions SET is_active = false WHERE id = $1`,
+            [session_id]
+        );
+    }
+
+    async updateSessionLastActive(session_id: string): Promise<void> {
+        await this.db.query(
+            `UPDATE user_sessions SET last_active_at = NOW() WHERE id = $1`,
+            [session_id]
+        );
+    }
+
+    async findActiveSession(session_id: string) {
+        const result = await this.db.query(
+            `SELECT id, is_active, expires_at FROM user_sessions WHERE id = $1`,
+            [session_id]
+        );
+        return result.rows[0];
+    }
+
     async storeRefreshTokens(data: {
         id: string,
         user_id: string,
         token_hash: string,
         ip?: string | undefined,
-        user_agent?: string | undefined
+        user_agent?: string | undefined,
+        session_id?: string | undefined
     }) {
         await pool.query(
-            `INSERT INTO refresh_tokens (id, user_id, token_hash, ip_address, user_agent, created_at, expires_at)
-                VALUES ($1, $2, $3, $4, $5, NOW(), NOW() + INTERVAL '7 days')
+            `INSERT INTO refresh_tokens (id, user_id, token_hash, ip_address, user_agent, session_id, created_at, expires_at)
+                VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW() + INTERVAL '7 days')
             `,
-            [data.id, data.user_id, data.token_hash, data.ip ?? null, data.user_agent ?? null]
+            [data.id, data.user_id, data.token_hash, data.ip ?? null, data.user_agent ?? null, data.session_id ?? null]
         );
     } 
 
@@ -104,7 +140,7 @@ class AuthRepository extends BaseRepository<User>{
 
     async findRefreshToken(id: string) {
         const result = await this.db.query(
-            `SELECT token_hash, is_revoked, created_at, expires_at, user_id FROM refresh_tokens WHERE id = $1`,
+            `SELECT token_hash, is_revoked, created_at, expires_at, user_id, session_id FROM refresh_tokens WHERE id = $1`,
             [id]
         );
         return result.rows[0];
