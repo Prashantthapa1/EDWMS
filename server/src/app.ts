@@ -3,12 +3,16 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
-import type { Request, Response, NextFunction } from 'express';
 import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import appRoutes from '@routes/index.js';
 import { errorHandler } from './errors/errorHandler.js';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -28,6 +32,9 @@ if(process.env['NODE_ENV'] === 'development') {
 };
 
 app.use(cookieParser());
+
+// Serve static files for local uploads
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Body parser
 app.use(express.json());

@@ -133,8 +133,10 @@ class AuthService {
 
             const { password, locked_until, google_id, ...user } = userInfo;
 
+            const role = typeof userInfo.role === 'string' ? userInfo.role.toLowerCase() : 'user';
+
             return { 
-                user: { ...user, role: userInfo.role?.toLowerCase() }, 
+                user: { ...user, role }, 
                 tokens: {
                     accessToken: tokens.accessToken,
                     refreshToken: tokens.refreshToken
@@ -217,9 +219,10 @@ class AuthService {
         }
 
         const { password, locked_until, google_id, failed_login_attempts, ...user } = userInfo;
+        const role = typeof userInfo.role === 'string' ? userInfo.role.toLowerCase() : 'user';
 
         return {
-            user: user as PublicUser,
+            user: { ...user, role } as PublicUser,
             tokens: { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken }
         };
     }
