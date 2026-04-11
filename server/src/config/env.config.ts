@@ -28,16 +28,16 @@ const envSchema = z.object({
     JWT_REFRESH_EXPIRES_IN: z.string().default('7d'),
 
     // cookie
-    COOKIE_SECURE: z.string()
+    COOKIE_SECURE: z.string(),
 
+    // Cloudinary (optional - for file uploads)
+    CLOUDINARY_CLOUD_NAME: z.string().optional(),
+    CLOUDINARY_KEY: z.string().optional(),
+    CLOUDINARY_SECRET: z.string().optional(),
+    CLOUDINARY_FOLDER: z.string(),
 });
 
 const parsed = envSchema.safeParse(process.env);
-console.log("parsed: ", parsed.data?.DB_HOST);
-console.log("parsed: ", parsed.data?.DB_PORT);
-console.log("parsed: ", parsed.data?.DB_USER);
-console.log("parsed: ", parsed.data?.DB_PASS);
-console.log("parsed: ", parsed.data?.DB_NAME);
 
 if (!parsed.success) {
     console.error('Failed to parse environment variables:');
