@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { authService } from "./auth.service.js";
 import { ApiResponse } from "@utils/ApiResponse.js";
-import { unathorized } from "src/errors/ApiError.js";
+import { unauthorized } from "src/errors/ApiError.js";
 import type { LoginDTO, registerUserDTO } from "src/types/auth.types.js";
 import env, { isProduction } from "@config/env.config.js";
 import { asyncHandler } from "src/middlewares/asyncHandler.js";
@@ -67,7 +67,7 @@ class AuthController {
     refresh = asyncHandler(async (req: Request, res: Response): Promise<void> => {
         const refreshToken: string | undefined = req.cookies?.refreshToken;
         if (!refreshToken) {
-            throw new unathorized('No refresh token provided');
+            throw new unauthorized('No refresh token provided');
         }
 
         const result = await authService.refreshTokens(

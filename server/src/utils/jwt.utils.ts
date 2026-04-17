@@ -40,7 +40,6 @@ export const generateTokens = (accessPayload: TokenPayload, refreshPayload: Refr
 export const verifyAccessToken = (token: string): TokenPayload => {
     try {
         const decoded = jwt.verify(token, env.JWT_SECRET);
-        console.log("Access decoded: ", decoded);
         return decoded as TokenPayload;
     } catch (err) {
         if(err instanceof jwt.TokenExpiredError) {

@@ -98,7 +98,7 @@ export default function UserTable({
               >
                 <td className="px-5 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 bg-gradient-to-br from-[#366189] to-[#4a7a9e] rounded-full flex items-center justify-center text-white text-sm font-medium">
+                    <div className="w-9 h-9 bg-linear-to-br from-[#366189] to-[#4a7a9e] rounded-full flex items-center justify-center text-white text-sm font-medium">
                       {user.name?.charAt(0)?.toUpperCase() || "?"}
                     </div>
                     <span className="text-gray-800 font-medium">{user.name}</span>

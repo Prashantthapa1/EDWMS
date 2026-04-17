@@ -1,19 +1,17 @@
 import { Pool } from 'pg';
 import env from './env.config.js';
 
-// const dbConfig = {
-//     host: process.env['DB_HOST'] || 'localhost',
-//     port: Number(process.env['DB_PORT']) ||  5432,
-//     user: process.env['DB_USER'] || "root",
-//     password: process.env['DB_PASS'],
-//     database: process.env['DB_NAME'] || 'edwms',
-// }
-
 const dbConfig: any = {
     host: env.DB_HOST,
     port: parseInt(env.DB_PORT),
     user: env.DB_USER,
-    database: env.DB_NAME
+    database: env.DB_NAME,
+    
+    // PostgreSQL (pg) Pool Configuration
+    max: 20, // Equivalent to connectionLimit
+    idleTimeoutMillis: 30000, // How long a client is allowed to remain idle before being closed
+    connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection could not be established
+    keepAlive: true, // Equivalent to enableKeepAlive
 };
 
 if (env.DB_PASS && env.DB_PASS.length > 0) dbConfig.password = env.DB_PASS;
@@ -32,11 +30,3 @@ export const testConnection =  async ()=> {
         try { await pool.end(); } catch {}
     }
 }
-
-//  way to create connection with database. 
-// $env:PGPASSWORD="postgres"
-// & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -c "CREATE DATABASE your_db_name;"
-
-//  way to run migrate
-// $env:DATABASE_URL="postgres://postgres:postgres@localhost:5432/edwms"
-// npx node-pg-migrate up

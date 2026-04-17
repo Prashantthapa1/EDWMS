@@ -191,7 +191,7 @@ export default function DocumentsPage() {
           onMouseLeave={() => setSidebarHovered(false)}
         >
           <div className={`p-4 flex items-center gap-3 ${!sidebarHovered && "lg:justify-center"}`}>
-            <i className="fa-solid fa-layer-group text-2xl flex-shrink-0"></i>
+            <i className="fa-solid fa-layer-group text-2xl shrink-0"></i>
             <span className={`text-xl font-bold tracking-tight whitespace-nowrap transition-opacity duration-200 ${!sidebarHovered && "lg:hidden"}`}>
               Docflow
             </span>
@@ -203,7 +203,7 @@ export default function DocumentsPage() {
             </button>
           </div>
 
-          <nav className="flex-grow mt-4 space-y-1 overflow-hidden">
+          <nav className="grow mt-4 space-y-1 overflow-hidden">
             {sidebarLinks.map((link) => (
               <a
                 key={link.id}
@@ -212,7 +212,7 @@ export default function DocumentsPage() {
                   link.id === "documents" ? "bg-white/20 border-l-4 border-white" : "opacity-80 hover:opacity-100"
                 } ${link.divider ? "border-t border-white/10 pt-4 mt-2" : ""} ${!sidebarHovered && "lg:justify-center lg:px-0"}`}
               >
-                <i className={`fa-solid ${link.icon} w-5 flex-shrink-0 ${!sidebarHovered && "lg:w-full lg:text-center"}`}></i>
+                <i className={`fa-solid ${link.icon} w-5 shrink-0 ${!sidebarHovered && "lg:w-full lg:text-center"}`}></i>
                 <span className={`whitespace-nowrap transition-opacity duration-200 ${!sidebarHovered && "lg:hidden"}`}>
                   {link.label}
                 </span>
@@ -224,11 +224,11 @@ export default function DocumentsPage() {
             <div className={`flex items-center gap-3 ${!sidebarHovered && "lg:justify-center"}`}>
               <img
                 src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || "User")}&background=random`}
-                className={`rounded-full border border-white/20 flex-shrink-0 ${sidebarHovered ? "w-10 h-10" : "w-10 h-10 lg:w-8 lg:h-8"}`}
+                className={`rounded-full border border-white/20 shrink-0 ${sidebarHovered ? "w-10 h-10" : "w-10 h-10 lg:w-8 lg:h-8"}`}
                 alt="User"
               />
               <div className={`transition-opacity duration-200 ${!sidebarHovered && "lg:hidden"}`}>
-                <p className="text-sm font-bold truncate max-w-[140px]">{user?.name || "User"}</p>
+                <p className="text-sm font-bold truncate max-w-35">{user?.name || "User"}</p>
                 <p className="text-xs opacity-60">{user?.role || "User"}</p>
               </div>
             </div>
@@ -236,7 +236,7 @@ export default function DocumentsPage() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-grow flex flex-col overflow-y-auto w-full">
+        <main className="grow flex flex-col overflow-y-auto w-full">
           {/* Header */}
           <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex justify-between items-center sticky top-0 z-10">
             <div className="flex items-center gap-4">
@@ -260,27 +260,27 @@ export default function DocumentsPage() {
           <div className="p-4 md:p-8 space-y-6">
             {/* Stats Cards */}
             <div className="flex gap-3 md:gap-4 overflow-x-auto pb-2 scrollbar-hide">
-              <div className="flex-shrink-0 w-32 md:w-auto bg-gradient-to-br from-blue-500 to-blue-600 text-white p-3 md:p-4 rounded-xl shadow-sm">
+              <div className="shrink-0 w-32 md:w-auto bg-linear-to-br from-blue-500 to-blue-600 text-white p-3 md:p-4 rounded-xl shadow-sm">
                 <p className="text-xs opacity-80">Total</p>
                 <h3 className="text-xl md:text-2xl font-bold">{stats.total}</h3>
               </div>
-              <div className="flex-shrink-0 w-32 md:w-auto bg-gradient-to-br from-gray-400 to-gray-500 text-white p-3 md:p-4 rounded-xl shadow-sm">
+              <div className="shrink-0 w-32 md:w-auto bg-linear-to-br from-gray-400 to-gray-500 text-white p-3 md:p-4 rounded-xl shadow-sm">
                 <p className="text-xs opacity-80">Draft</p>
                 <h3 className="text-xl md:text-2xl font-bold">{stats.draft}</h3>
               </div>
-              <div className="flex-shrink-0 w-32 md:w-auto bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-3 md:p-4 rounded-xl shadow-sm">
+              <div className="shrink-0 w-32 md:w-auto bg-linear-to-br from-indigo-500 to-indigo-600 text-white p-3 md:p-4 rounded-xl shadow-sm">
                 <p className="text-xs opacity-80">Submitted</p>
                 <h3 className="text-xl md:text-2xl font-bold">{stats.submitted}</h3>
               </div>
-              <div className="flex-shrink-0 w-32 md:w-auto bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-3 md:p-4 rounded-xl shadow-sm">
+              <div className="shrink-0 w-32 md:w-auto bg-linear-to-br from-yellow-500 to-yellow-600 text-white p-3 md:p-4 rounded-xl shadow-sm">
                 <p className="text-xs opacity-80">Under Review</p>
                 <h3 className="text-xl md:text-2xl font-bold">{stats.under_review}</h3>
               </div>
-              <div className="flex-shrink-0 w-32 md:w-auto bg-gradient-to-br from-green-500 to-green-600 text-white p-3 md:p-4 rounded-xl shadow-sm">
+              <div className="shrink-0 w-32 md:w-auto bg-linear-to-br from-green-500 to-green-600 text-white p-3 md:p-4 rounded-xl shadow-sm">
                 <p className="text-xs opacity-80">Approved</p>
                 <h3 className="text-xl md:text-2xl font-bold">{stats.approved}</h3>
               </div>
-              <div className="flex-shrink-0 w-32 md:w-auto bg-gradient-to-br from-red-500 to-red-600 text-white p-3 md:p-4 rounded-xl shadow-sm">
+              <div className="shrink-0 w-32 md:w-auto bg-linear-to-br from-red-500 to-red-600 text-white p-3 md:p-4 rounded-xl shadow-sm">
                 <p className="text-xs opacity-80">Rejected</p>
                 <h3 className="text-xl md:text-2xl font-bold">{stats.rejected}</h3>
               </div>
@@ -318,7 +318,7 @@ export default function DocumentsPage() {
             {/* Filters */}
             <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
               <div className="flex flex-col sm:flex-row gap-3">
-                <div className="relative flex-grow">
+                <div className="relative grow">
                   <i className="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                   <input
                     type="text"

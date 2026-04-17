@@ -186,7 +186,7 @@ export default function CategoriesPage() {
           onMouseLeave={() => setSidebarHovered(false)}
         >
           <div className={`p-4 flex items-center gap-3 ${!sidebarHovered && "lg:justify-center"}`}>
-            <i className="fa-solid fa-layer-group text-2xl flex-shrink-0"></i>
+            <i className="fa-solid fa-layer-group text-2xl shrink-0"></i>
             <span
               className={`text-xl font-bold tracking-tight whitespace-nowrap transition-opacity duration-200 ${
                 !sidebarHovered && "lg:hidden"
@@ -202,7 +202,7 @@ export default function CategoriesPage() {
             </button>
           </div>
 
-          <nav className="flex-grow mt-4 space-y-1 overflow-hidden">
+          <nav className="grow mt-4 space-y-1 overflow-hidden">
             {sidebarLinks.map((link) => (
               <a
                 key={link.id}
@@ -216,7 +216,7 @@ export default function CategoriesPage() {
                 }`}
               >
                 <i
-                  className={`fa-solid ${link.icon} w-5 flex-shrink-0 ${
+                  className={`fa-solid ${link.icon} w-5 shrink-0 ${
                     !sidebarHovered && "lg:w-full lg:text-center"
                   }`}
                 ></i>
@@ -237,7 +237,7 @@ export default function CategoriesPage() {
                 src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
                   user?.name || "Admin"
                 )}&background=random`}
-                className={`rounded-full border border-white/20 flex-shrink-0 ${
+                className={`rounded-full border border-white/20 shrink-0 ${
                   sidebarHovered ? "w-10 h-10" : "w-10 h-10 lg:w-8 lg:h-8"
                 }`}
                 alt="Admin"
@@ -245,7 +245,7 @@ export default function CategoriesPage() {
               <div
                 className={`transition-opacity duration-200 ${!sidebarHovered && "lg:hidden"}`}
               >
-                <p className="text-sm font-bold truncate max-w-[140px]">
+                <p className="text-sm font-bold truncate max-w-35">
                   {user?.name || "Admin User"}
                 </p>
                 <p className="text-xs opacity-60">Admin</p>
@@ -255,7 +255,7 @@ export default function CategoriesPage() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-grow flex flex-col overflow-y-auto w-full">
+        <main className="grow flex flex-col overflow-y-auto w-full">
           {/* Header */}
           <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex justify-between items-center sticky top-0 z-10">
             <div className="flex items-center gap-4">
@@ -282,7 +282,7 @@ export default function CategoriesPage() {
           <div className="p-4 md:p-8 space-y-6">
             {/* Stats Cards */}
             <div className="flex gap-3 md:gap-6 overflow-x-auto pb-2 md:pb-0 md:grid md:grid-cols-3 scrollbar-hide">
-              <div className="flex-shrink-0 w-40 md:w-auto bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 md:p-6 rounded-xl shadow-sm">
+              <div className="shrink-0 w-40 md:w-auto bg-linear-to-br from-blue-500 to-blue-600 text-white p-4 md:p-6 rounded-xl shadow-sm">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-lg flex items-center justify-center">
                     <i className="fa-solid fa-folder text-lg md:text-xl"></i>
@@ -293,7 +293,7 @@ export default function CategoriesPage() {
                   </div>
                 </div>
               </div>
-              <div className="flex-shrink-0 w-40 md:w-auto bg-gradient-to-br from-green-500 to-green-600 text-white p-4 md:p-6 rounded-xl shadow-sm">
+              <div className="shrink-0 w-40 md:w-auto bg-linear-to-br from-green-500 to-green-600 text-white p-4 md:p-6 rounded-xl shadow-sm">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-lg flex items-center justify-center">
                     <i className="fa-solid fa-check text-lg md:text-xl"></i>
@@ -304,7 +304,7 @@ export default function CategoriesPage() {
                   </div>
                 </div>
               </div>
-              <div className="flex-shrink-0 w-40 md:w-auto bg-gradient-to-br from-gray-500 to-gray-600 text-white p-4 md:p-6 rounded-xl shadow-sm">
+              <div className="shrink-0 w-40 md:w-auto bg-linear-to-br from-gray-500 to-gray-600 text-white p-4 md:p-6 rounded-xl shadow-sm">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-lg flex items-center justify-center">
                     <i className="fa-solid fa-pause text-lg md:text-xl"></i>
@@ -320,8 +320,8 @@ export default function CategoriesPage() {
             {/* Filters & Actions */}
             <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 md:p-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div className="flex flex-col sm:flex-row gap-3 flex-grow">
-                  <div className="relative flex-grow max-w-md">
+                <div className="flex flex-col sm:flex-row gap-3 grow">
+                  <div className="relative grow max-w-md">
                     <i className="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                     <input
                       type="text"

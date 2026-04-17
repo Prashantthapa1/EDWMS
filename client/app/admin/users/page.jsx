@@ -212,7 +212,7 @@ export default function UsersPage() {
           onMouseLeave={() => setSidebarHovered(false)}
         >
           <div className={`p-4 flex items-center gap-3 ${!sidebarHovered && 'lg:justify-center'}`}>
-            <i className="fa-solid fa-layer-group text-2xl flex-shrink-0"></i>
+            <i className="fa-solid fa-layer-group text-2xl shrink-0"></i>
             <span className={`text-xl font-bold tracking-tight whitespace-nowrap transition-opacity duration-200 ${!sidebarHovered && 'lg:hidden'}`}>
               Docflow
             </span>
@@ -225,7 +225,7 @@ export default function UsersPage() {
             </button>
           </div>
 
-          <nav className="flex-grow mt-4 space-y-1 overflow-hidden">
+          <nav className="grow mt-4 space-y-1 overflow-hidden">
             {sidebarLinks.map((link) => (
               <a
                 key={link.id}
@@ -237,7 +237,7 @@ export default function UsersPage() {
                     : "opacity-80 hover:opacity-100"
                 } ${link.divider ? "border-t border-white/10 pt-4 mt-2" : ""} ${!sidebarHovered && 'lg:justify-center lg:px-0'}`}
               >
-                <i className={`fa-solid ${link.icon} w-5 flex-shrink-0 ${!sidebarHovered && 'lg:w-full lg:text-center'}`}></i>
+                <i className={`fa-solid ${link.icon} w-5 shrink-0 ${!sidebarHovered && 'lg:w-full lg:text-center'}`}></i>
                 <span className={`whitespace-nowrap transition-opacity duration-200 ${!sidebarHovered && 'lg:hidden'}`}>
                   {link.label}
                 </span>
@@ -249,11 +249,11 @@ export default function UsersPage() {
             <div className={`flex items-center gap-3 ${!sidebarHovered && 'lg:justify-center'}`}>
               <img
                 src={`https://ui-avatars.com/api/?name=${encodeURIComponent(authUser?.name || "Admin User")}&background=random`}
-                className={`rounded-full border border-white/20 flex-shrink-0 ${sidebarHovered ? 'w-10 h-10' : 'w-10 h-10 lg:w-8 lg:h-8'}`}
+                className={`rounded-full border border-white/20 shrink-0 ${sidebarHovered ? 'w-10 h-10' : 'w-10 h-10 lg:w-8 lg:h-8'}`}
                 alt="Admin"
               />
               <div className={`transition-opacity duration-200 ${!sidebarHovered && 'lg:hidden'}`}>
-                <p className="text-sm font-bold truncate max-w-[140px]">{authUser?.name || "Admin User"}</p>
+                <p className="text-sm font-bold truncate max-w-35">{authUser?.name || "Admin User"}</p>
                 <p className="text-xs opacity-60">Super Admin</p>
               </div>
             </div>
@@ -261,7 +261,7 @@ export default function UsersPage() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-grow flex flex-col overflow-y-auto w-full">
+        <main className="grow flex flex-col overflow-y-auto w-full">
           {/* Header */}
           <header className="bg-white border-b border-gray-200 px-4 md:px-8 py-4 flex justify-between items-center sticky top-0 z-10">
             <div className="flex items-center gap-4">
@@ -298,7 +298,7 @@ export default function UsersPage() {
             <div className="mb-6 md:mb-8">
               <div className="flex gap-3 md:gap-6 overflow-x-auto pb-2 md:pb-0 md:grid md:grid-cols-4 scrollbar-hide">
                 {/* Total Users */}
-                <div className="flex-shrink-0 w-40 md:w-auto bg-gradient-to-br from-[#366189] to-[#4a7a9e] rounded-xl p-4 md:p-5 shadow-lg text-white">
+                <div className="shrink-0 w-40 md:w-auto bg-linear-to-br from-[#366189] to-[#4a7a9e] rounded-xl p-4 md:p-5 shadow-lg text-white">
                   <div className="flex items-center justify-between mb-2">
                     <i className="fa-solid fa-users text-white/80 text-lg"></i>
                     <span className="text-2xl md:text-3xl font-bold">{stats?.total || 0}</span>
@@ -306,7 +306,7 @@ export default function UsersPage() {
                   <p className="text-white/80 text-xs md:text-sm">Total Users</p>
                 </div>
                 {/* Active Users */}
-                <div className="flex-shrink-0 w-40 md:w-auto bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-4 md:p-5 shadow-lg text-white">
+                <div className="shrink-0 w-40 md:w-auto bg-linear-to-br from-green-500 to-emerald-600 rounded-xl p-4 md:p-5 shadow-lg text-white">
                   <div className="flex items-center justify-between mb-2">
                     <i className="fa-solid fa-user-check text-white/80 text-lg"></i>
                     <span className="text-2xl md:text-3xl font-bold">{stats?.active || 0}</span>
@@ -314,7 +314,7 @@ export default function UsersPage() {
                   <p className="text-white/80 text-xs md:text-sm">Active</p>
                 </div>
                 {/* Inactive Users */}
-                <div className="flex-shrink-0 w-40 md:w-auto bg-gradient-to-br from-orange-500 to-red-500 rounded-xl p-4 md:p-5 shadow-lg text-white">
+                <div className="shrink-0 w-40 md:w-auto bg-linear-to-br from-orange-500 to-red-500 rounded-xl p-4 md:p-5 shadow-lg text-white">
                   <div className="flex items-center justify-between mb-2">
                     <i className="fa-solid fa-user-times text-white/80 text-lg"></i>
                     <span className="text-2xl md:text-3xl font-bold">{stats?.inactive || 0}</span>
@@ -322,7 +322,7 @@ export default function UsersPage() {
                   <p className="text-white/80 text-xs md:text-sm">Inactive</p>
                 </div>
                 {/* Admins */}
-                <div className="flex-shrink-0 w-40 md:w-auto bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl p-4 md:p-5 shadow-lg text-white">
+                <div className="shrink-0 w-40 md:w-auto bg-linear-to-br from-purple-500 to-indigo-600 rounded-xl p-4 md:p-5 shadow-lg text-white">
                   <div className="flex items-center justify-between mb-2">
                     <i className="fa-solid fa-user-shield text-white/80 text-lg"></i>
                     <span className="text-2xl md:text-3xl font-bold">

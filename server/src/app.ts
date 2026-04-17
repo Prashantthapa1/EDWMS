@@ -45,7 +45,7 @@ app.use('/api/', appRoutes);
 
 // not found
 app.use((_req, res) => {
-    res.status(4000).json({ messgae: "Not found!" });
+    res.status(400).json({ messgae: "Not found!" });
 });
 
 // error middleware

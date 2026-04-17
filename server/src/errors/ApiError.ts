@@ -23,8 +23,8 @@ export class ApiError extends Error {
 }
 
 export class badRequest extends ApiError {
-    constructor(message: string = "Bad Request") {
-        super(message, HTTP_STATUS.BAD_REQUEST);
+    constructor(message: string = "Bad Request", errors?: any) {
+        super(message, HTTP_STATUS.BAD_REQUEST, errors);
     }
 }
 
@@ -47,13 +47,13 @@ export class notFound extends ApiError{
 }
 
 export class forbidden extends ApiError{
-    constructor(messaage = "Frobidden") {
-        super(messaage, HTTP_STATUS.FORBIDDEN);
+    constructor(message: string = "Forbidden") {
+        super(message, HTTP_STATUS.FORBIDDEN);
     }
 }
 
-export class unathorized extends ApiError{
-    constructor(messaage = "Unathorized") {
-        super(messaage, HTTP_STATUS.UNAUTHORIZED);
+export class unauthorized extends ApiError{
+    constructor(message: string = "Unauthorized") {
+        super(message, HTTP_STATUS.UNAUTHORIZED);
     }
 }
