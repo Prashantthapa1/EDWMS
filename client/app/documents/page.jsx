@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
-import AuthGuard from "@/components/auth/AuthGuard";
+import AuthGuard from "@/components/auth/auth-guard";
 import DocumentUploadModal from "@/components/documents/DocumentUploadModal";
 import {
   getDocuments,
@@ -47,13 +47,13 @@ export default function DocumentsPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const sidebarLinks = [
-    { id: "dashboard", label: "Dashboard", icon: "fa-chart-line" },
-    { id: "users", label: "User Management", icon: "fa-users" },
-    { id: "documents", label: "Documents", icon: "fa-file-alt" },
-    { id: "categories", label: "Categories", icon: "fa-folder" },
-    { id: "workflows", label: "Workflows", icon: "fa-sitemap" },
-    { id: "reports", label: "Reports", icon: "fa-chart-bar" },
-    { id: "settings", label: "Settings", icon: "fa-cog", divider: true },
+    { id: "dashboard", icon: "fa-chart-pie", label: "Dashboard", href: "/admin" },
+    { id: "users", icon: "fa-users", label: "User Management", href: "/admin/users" },
+    { id: "documents", icon: "fa-folder-open", label: "Document Repository", href: "/documents" },
+    { id: "categories", icon: "fa-folder", label: "Categories", href: "/admin/categories" },
+    { id: "workflows", icon: "fa-route", label: "Workflow Automation", href: "#" },
+    { id: "audit", icon: "fa-clipboard-list", label: "Audit Logs", href: "#" },
+    { id: "settings", icon: "fa-gear", label: "System Settings", href: "#", divider: true },
   ];
 
   const fetchDocuments = useCallback(async () => {
@@ -68,11 +68,11 @@ export default function DocumentsPage() {
         priority: filterPriority || undefined,
       };
 
-      const response = viewMode === "my" 
+      const response = viewMode === "my"
         ? await getMyDocuments(params)
         : await getDocuments(params);
-      
-      const data = response.data?.data || response.data;
+
+      const data = response.data || {};
 
       setDocuments(data.data || []);
       setPagination((prev) => ({
@@ -90,7 +90,7 @@ export default function DocumentsPage() {
   const fetchStats = useCallback(async () => {
     try {
       const response = await getDocumentStats(viewMode === "my");
-      setStats(response.data?.data || response.data || {});
+      setStats(response.data || {});
     } catch (error) {
       console.error("Error fetching stats:", error);
     }
@@ -99,10 +99,13 @@ export default function DocumentsPage() {
   const fetchMetadata = useCallback(async () => {
     try {
       const [catRes, depRes] = await Promise.all([getActiveCategories(), getDepartments()]);
-      setCategories(catRes.data?.data || catRes.data || []);
-      setDepartments(depRes.data?.data || depRes.data || []);
-    } catch (error) {
+      const catData = catRes.data || {};
+      const depData = depRes.data || {};
+      setCategories(catData.data || []);
+      setDepartments(depData.data || []);
       console.error("Error fetching metadata:", error);
+    } catch(err) {
+
     }
   }, []);
 
@@ -285,19 +288,19 @@ export default function DocumentsPage() {
 
             {/* View Toggle & Upload Button */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div className="flex gap-2">
+              <div className="flex bg-gray-100 p-1 rounded-lg">
                 <button
                   onClick={() => setViewMode("all")}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
-                    viewMode === "all" ? "bg-[#366189] text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all cursor-pointer ${
+                    viewMode === "all" ? "bg-white text-[#366189] shadow-sm" : "text-gray-500 hover:text-gray-700 hover:bg-gray-200/50"
                   }`}
                 >
                   All Documents
                 </button>
                 <button
                   onClick={() => setViewMode("my")}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
-                    viewMode === "my" ? "bg-[#366189] text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all cursor-pointer ${
+                    viewMode === "my" ? "bg-white text-[#366189] shadow-sm" : "text-gray-500 hover:text-gray-700 hover:bg-gray-200/50"
                   }`}
                 >
                   My Documents
