@@ -101,6 +101,7 @@ export default function AdminDashboard() {
     { id: "dashboard", icon: "fa-chart-pie", label: "Dashboard" },
     { id: "users", icon: "fa-users", label: "User Management" },
     { id: "documents", icon: "fa-folder-open", label: "Document Repository" },
+    { id: "categories", icon: "fa-folder", label: "Categories" },
     { id: "workflows", icon: "fa-route", label: "Workflow Automation" },
     { id: "audit", icon: "fa-clipboard-list", label: "Audit Logs" },
     { id: "settings", icon: "fa-gear", label: "System Settings", divider: true },
@@ -169,10 +170,15 @@ export default function AdminDashboard() {
             {sidebarLinks.map((link) => (
               <a
                 key={link.id}
-                href={link.id === "users" ? "/admin/users" : "#"}
+                href={
+                  link.id === "users" ? "/admin/users" :
+                  link.id === "categories" ? "/admin/categories" :
+                  link.id === "documents" ? "/documents" :
+                  "#"
+                }
                 onClick={(e) => {
                   setMobileMenuOpen(false);
-                  if (link.id === "users") {
+                  if (["users", "categories", "documents"].includes(link.id)) {
                     return;
                   }
                   e.preventDefault();

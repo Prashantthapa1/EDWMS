@@ -54,7 +54,8 @@ export default function UsersPage() {
   const sidebarLinks = [
     { id: "dashboard", icon: "fa-chart-pie", label: "Dashboard", href: "/admin" },
     { id: "users", icon: "fa-users", label: "User Management", href: "/admin/users" },
-    { id: "documents", icon: "fa-folder-open", label: "Document Repository", href: "#" },
+    { id: "documents", icon: "fa-folder-open", label: "Document Repository", href: "/documents" },
+    { id: "categories", icon: "fa-folder", label: "Categories", href: "/admin/categories" },
     { id: "workflows", icon: "fa-route", label: "Workflow Automation", href: "#" },
     { id: "audit", icon: "fa-clipboard-list", label: "Audit Logs", href: "#" },
     { id: "settings", icon: "fa-gear", label: "System Settings", href: "#", divider: true },
@@ -366,7 +367,7 @@ export default function UsersPage() {
                     <option value="">All Roles</option>
                     {roles.map((role) => (
                       <option key={role.id} value={role.id}>
-                        {role.role_name}
+                        {role.name}
                       </option>
                     ))}
                   </select>
@@ -378,7 +379,7 @@ export default function UsersPage() {
                     <option value="">All Departments</option>
                     {departments.map((dep) => (
                       <option key={dep.id} value={dep.id}>
-                        {dep.dep_name}
+                        {dep.name}
                       </option>
                     ))}
                   </select>

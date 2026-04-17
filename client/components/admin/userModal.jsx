@@ -204,7 +204,7 @@ export default function UserModal({
               <option value="">Select a role</option>
               {roles.map((role) => (
                 <option key={role.id} value={role.id}>
-                  {role.role_name}
+                  {role.name}
                 </option>
               ))}
             </select>
@@ -227,7 +227,7 @@ export default function UserModal({
               <option value="">No department</option>
               {departments.map((dep) => (
                 <option key={dep.id} value={dep.id}>
-                  {dep.dep_name}
+                  {dep.name}
                 </option>
               ))}
             </select>
