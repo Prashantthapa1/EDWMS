@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
-import AuthGuard from "@/components/auth/AuthGuard";
+import AuthGuard from "@/components/auth/auth-guard";
 import {
   getCategories,
   createCategory,
@@ -37,13 +37,13 @@ export default function CategoriesPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const sidebarLinks = [
-    { id: "dashboard", label: "Dashboard", icon: "fa-chart-line" },
-    { id: "users", label: "User Management", icon: "fa-users" },
-    { id: "documents", label: "Documents", icon: "fa-file-alt" },
-    { id: "categories", label: "Categories", icon: "fa-folder" },
-    { id: "workflows", label: "Workflows", icon: "fa-sitemap" },
-    { id: "reports", label: "Reports", icon: "fa-chart-bar" },
-    { id: "settings", label: "Settings", icon: "fa-cog", divider: true },
+    { id: "dashboard", icon: "fa-chart-pie", label: "Dashboard", href: "/admin" },
+    { id: "users", icon: "fa-users", label: "User Management", href: "/admin/users" },
+    { id: "documents", icon: "fa-folder-open", label: "Document Repository", href: "/documents" },
+    { id: "categories", icon: "fa-folder", label: "Categories", href: "/admin/categories" },
+    { id: "workflows", icon: "fa-route", label: "Workflow Automation", href: "#" },
+    { id: "audit", icon: "fa-clipboard-list", label: "Audit Logs", href: "#" },
+    { id: "settings", icon: "fa-gear", label: "System Settings", href: "#", divider: true },
   ];
 
   const fetchCategories = useCallback(async () => {
@@ -57,7 +57,7 @@ export default function CategoriesPage() {
       };
 
       const response = await getCategories(params);
-      const data = response.data?.data || response.data;
+      const data = response.data || {};
 
       setCategories(data.data || []);
       setPagination((prev) => ({
